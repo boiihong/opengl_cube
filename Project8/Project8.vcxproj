@@ -127,6 +127,7 @@
     <ClCompile Include="esTransform.cc" />
     <ClCompile Include="esUtil.cc" />
     <ClCompile Include="esUtil_win32.cc" />
+    <ClCompile Include="MvpGenerator.cc" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Skybox_FS.txt" />
@@ -139,6 +140,7 @@
     <ClInclude Include="D:\project_zero\src\Common\Include\esUtil_win.h" />
     <ClInclude Include="D:\project_zero\src\Common\Include\stb_image.h" />
     <ClInclude Include="DrawObject.h" />
+    <ClInclude Include="MvpGenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

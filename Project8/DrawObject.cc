@@ -95,7 +95,7 @@ void TriangleDrawObject::Update(float deltaTime)
 
 
 // get uniform location and texture id.
-int SkyboxDrawObject::Init(GLuint skyboxTexture_in)
+int SkyboxDrawObject::Init(GLuint skyboxTexture_in, ESContext *ctx)
 {
 	DrawObject::Init();
 
@@ -109,6 +109,19 @@ int SkyboxDrawObject::Init(GLuint skyboxTexture_in)
 	}
 
 	// mvp
+	GenModelview();
+	GenPerspective(60.0f, ctx->width / ctx->height, 1.0f, 20.0f);
+	GenMvp();
+
+	return GL_TRUE;
+}
+
+int SkyboxDrawObject::GenModelview()
+{
+	esMatrixLoadIdentity(&modelviewMatrix);
+	esTranslate(&modelviewMatrix, 0, 0, -8.0);
+
+	return GL_TRUE;
 }
 
 void SkyboxDrawObject::Draw()

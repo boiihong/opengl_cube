@@ -40,7 +40,8 @@
 
 typedef struct
 {
-	TriangleDrawObject * triangle_drawObject;
+	TriangleDrawObject	*triangle_drawObject;
+	SkyboxDrawObject	*skybox_drawObject;
    
 } UserData;
 
@@ -51,10 +52,11 @@ typedef struct
 int Init ( ESContext *esContext )
 {
    UserData *userData = (UserData *)esContext->userData;
-   char vShaderStr[] = "Triangle_VS.txt";
-   char fShaderStr[] = "Triangle_FS.txt";
 
-	userData->triangle_drawObject = new TriangleDrawObject(vShaderStr, fShaderStr);
+   // initialize triangle drawing object .
+   char vShaderStr_tri[] = "Triangle_VS.txt";
+   char fShaderStr_tri[] = "Triangle_FS.txt";
+	userData->triangle_drawObject = new TriangleDrawObject(vShaderStr_tri, fShaderStr_tri);
 	if (!userData->triangle_drawObject->Init()) {
 		return FALSE;
 	}
@@ -69,7 +71,13 @@ int Init ( ESContext *esContext )
 	const char *images[6] = { right_file, left_file, top_file, bottom_file, front_file, back_file };
 	GLuint skyboxTextureId = loadCubemap(images);
 
-
+	// initializing skybox draw object
+	char vShaderStr_sky[] = "Skybox_VS.txt";
+	char fShaderStr_sky[] = "Skybox_FS.txt";
+	userData->skybox_drawObject = new SkyboxDrawObject(vShaderStr_sky, fShaderStr_sky);
+	if (!userData->skybox_drawObject->Init(skyboxTextureId, esContext)) {
+		return FALSE;
+	}
 
    glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
    return TRUE;
@@ -90,6 +98,7 @@ void Draw ( ESContext *esContext )
    glClear ( GL_COLOR_BUFFER_BIT );
 
    userData->triangle_drawObject->Draw();
+
 }
 
 void Shutdown ( ESContext *esContext )

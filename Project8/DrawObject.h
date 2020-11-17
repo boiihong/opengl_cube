@@ -1,6 +1,7 @@
 #pragma once
 
 #include "esUtil.h"
+#include "MvpGenerator.h"
 
 class DrawObject {
 public:
@@ -23,6 +24,7 @@ private :
 protected:
 	ESContext *esContext;
 	GLuint programObject;
+
 };
 
 
@@ -39,18 +41,20 @@ public:
 };
 
 
-class SkyboxDrawObject : DrawObject {
+class SkyboxDrawObject : DrawObject, MvpGenerator {
 public:
 	SkyboxDrawObject(const char *vsSrcFile, const char *fsSrcFile) :
 		DrawObject(vsSrcFile, fsSrcFile) {};
 
-	int Init(GLuint skyboxTexture_in);
+	int Init(GLuint skyboxTexture_in, ESContext *ctx);
 	void Draw();
-
+	int GenModelview() override;
 private:
+
 	GLuint _skyboxTextureId;
 	const char *_skyboxName = "skybox";
 	GLint _skyboxUniformLoc;
+
 };
 
 

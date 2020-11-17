@@ -36,6 +36,9 @@
     <ClCompile Include="esMain.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MvpGenerator.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Triangle_FS.txt">
@@ -62,6 +65,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="D:\project_zero\src\Common\Include\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MvpGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
