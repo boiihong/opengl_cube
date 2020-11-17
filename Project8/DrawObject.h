@@ -36,3 +36,27 @@ public:
 
 
 };
+
+
+class SkyboxDrawObject : DrawObject {
+public:
+	SkyboxDrawObject(const char *vsSrcFile, const char *fsSrcFile) :
+		DrawObject(vsSrcFile, fsSrcFile) {};
+
+
+
+};
+
+
+class RotatingCubeObject : DrawObject {
+public:
+	RotatingCubeObject(const char *vsSrcFile, const char *fsSrcFile)
+		:DrawObject(vsSrcFile, fsSrcFile) {};
+
+	int Init();
+	void Draw();
+	void Update(float deltaTime);
+
+
+};
+

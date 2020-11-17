@@ -120,17 +120,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="D:\project_zero\src\Chapter_2\Hello_Triangle\esMain.cc" />
-    <ClCompile Include="D:\project_zero\src\Common\Source\esShader.cc" />
-    <ClCompile Include="D:\project_zero\src\Common\Source\esShapes.cc" />
-    <ClCompile Include="D:\project_zero\src\Common\Source\esTransform.cc" />
-    <ClCompile Include="D:\project_zero\src\Common\Source\esUtil.cc" />
-    <ClCompile Include="D:\project_zero\src\Common\Source\Win32\esUtil_win32.cc" />
     <ClCompile Include="DrawObject.cc" />
+    <ClCompile Include="esMain.cc" />
+    <ClCompile Include="esShader.cc" />
+    <ClCompile Include="esShapes.cc" />
+    <ClCompile Include="esTransform.cc" />
+    <ClCompile Include="esUtil.cc" />
+    <ClCompile Include="esUtil_win32.cc" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Skybox_FS.txt" />
+    <Text Include="Skybox_VS.txt" />
     <Text Include="Triangle_FS.txt" />
     <Text Include="Triangle_VS.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\project_zero\src\Common\Include\esUtil.h" />
+    <ClInclude Include="D:\project_zero\src\Common\Include\esUtil_win.h" />
+    <ClInclude Include="D:\project_zero\src\Common\Include\stb_image.h" />
+    <ClInclude Include="DrawObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

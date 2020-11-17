@@ -1,0 +1,11 @@
+#version 300 es                             
+uniform mat4 u_mvpMatrix;                   
+layout(location = 0) in vec3 a_position;    
+out vec3 tex_coord;                         
+void main()                                 
+{	 	 									 
+   tex_coord = a_position;				 
+   vec4 pos = u_mvpMatrix * vec4(a_position, 1.0);	 
+   gl_Position = pos.xyww;	 
+
+}

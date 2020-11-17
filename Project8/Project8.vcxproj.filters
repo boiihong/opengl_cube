@@ -18,22 +18,22 @@
     <ClCompile Include="DrawObject.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\project_zero\src\Chapter_2\Hello_Triangle\esMain.cc">
+    <ClCompile Include="esShader.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\project_zero\src\Common\Source\Win32\esUtil_win32.cc">
+    <ClCompile Include="esShapes.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\project_zero\src\Common\Source\esUtil.cc">
+    <ClCompile Include="esTransform.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\project_zero\src\Common\Source\esTransform.cc">
+    <ClCompile Include="esUtil.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\project_zero\src\Common\Source\esShapes.cc">
+    <ClCompile Include="esUtil_win32.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\project_zero\src\Common\Source\esShader.cc">
+    <ClCompile Include="esMain.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,5 +44,25 @@
     <Text Include="Triangle_VS.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="Skybox_FS.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="Skybox_VS.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DrawObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project_zero\src\Common\Include\esUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project_zero\src\Common\Include\esUtil_win.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project_zero\src\Common\Include\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

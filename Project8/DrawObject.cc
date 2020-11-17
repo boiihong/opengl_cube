@@ -92,3 +92,4 @@ void TriangleDrawObject::Update(float deltaTime)
 {
 
 }
+
