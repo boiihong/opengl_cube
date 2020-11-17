@@ -11,6 +11,7 @@ public:
 		}
 	}
 
+	// make program object using shader source
 	int Init();
 	virtual void Draw() {};
 	virtual void Update(float deltaTime) {};
@@ -43,8 +44,13 @@ public:
 	SkyboxDrawObject(const char *vsSrcFile, const char *fsSrcFile) :
 		DrawObject(vsSrcFile, fsSrcFile) {};
 
+	int Init(GLuint skyboxTexture_in);
+	void Draw();
 
-
+private:
+	GLuint _skyboxTextureId;
+	const char *_skyboxName = "skybox";
+	GLint _skyboxUniformLoc;
 };
 
 

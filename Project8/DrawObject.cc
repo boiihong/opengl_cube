@@ -93,3 +93,25 @@ void TriangleDrawObject::Update(float deltaTime)
 
 }
 
+
+// get uniform location and texture id.
+int SkyboxDrawObject::Init(GLuint skyboxTexture_in)
+{
+	DrawObject::Init();
+
+	// texture 
+	this->_skyboxTextureId = skyboxTexture_in;
+	this->_skyboxUniformLoc = glGetUniformLocation(DrawObject::programObject, this->_skyboxName);
+	if (this->_skyboxUniformLoc == GL_INVALID_VALUE || this->_skyboxUniformLoc == GL_INVALID_OPERATION)
+	{
+		printf("cannot find skybox uniform value\n");
+		return GL_FALSE;
+	}
+
+	// mvp
+}
+
+void SkyboxDrawObject::Draw()
+{
+
+}
