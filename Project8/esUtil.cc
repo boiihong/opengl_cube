@@ -41,6 +41,7 @@
 //
 #define _CRT_SECURE_NO_WARNINGS
 #define STB_IMAGE_IMPLEMENTATION
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -131,7 +132,18 @@ EGLint GetContextRenderableType ( EGLDisplay eglDisplay )
 //  Public Functions
 //
 //
-
+void ESUTIL_API printmat(ESMatrix *m)
+{
+	for (int row = 0; row < 3; row++)
+	{
+		for (int col = 0; col < 3; col++)
+		{
+			printf("%f ", m->m[row][col]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
 ///
 //  esCreateWindow()
 //

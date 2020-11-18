@@ -88,6 +88,20 @@ extern "C" {
 #define TRUE 1
 #endif
 
+typedef ESCamera ESCamera;
+
+struct ESCamera
+{
+	// camera position
+	GLfloat posX, posY, posZ;
+	// camera direction 
+	GLfloat lookAtX, lookAtY, lookAtZ;
+	// camera ... 
+	GLfloat upX, upY, upZ;
+	// perspective
+	GLfloat fovy, aspect, nearZ, farZ;
+} ;
+
 typedef struct
 {
    GLfloat   m[4][4];

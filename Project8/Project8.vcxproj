@@ -136,11 +136,11 @@
     <Text Include="Triangle_VS.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D:\project_zero\src\Common\Include\esUtil.h" />
-    <ClInclude Include="D:\project_zero\src\Common\Include\esUtil_win.h" />
-    <ClInclude Include="D:\project_zero\src\Common\Include\stb_image.h" />
     <ClInclude Include="DrawObject.h" />
+    <ClInclude Include="esUtil.h" />
+    <ClInclude Include="esUtil_win.h" />
     <ClInclude Include="MvpGenerator.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

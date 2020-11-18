@@ -35,14 +35,16 @@
 //    a minimal vertex/fragment shader.  The purpose of this
 //    example is to demonstrate the basic concepts of
 //    OpenGL ES 3.0 rendering.
-#include "esUtil.h"
 #include "DrawObject.h"
+#include "esUtil.h"
+
 
 typedef struct
 {
 	TriangleDrawObject	*triangle_drawObject;
 	SkyboxDrawObject	*skybox_drawObject;
-   
+	ESCamera			*viewer;
+
 } UserData;
 
 
@@ -52,6 +54,20 @@ typedef struct
 int Init ( ESContext *esContext )
 {
    UserData *userData = (UserData *)esContext->userData;
+
+   // set initial camera position
+   userData->viewer = new ESCamera();
+   ESCamera *cam = userData->viewer;
+   cam->posX = cam->posY = cam->posZ = 0.0f;
+   cam->lookAtX = cam->lookAtZ = 0.0f;
+   cam->lookAtY = 1.0f;
+   cam->upX = cam->upY = 0.0f;
+   cam->upY = 1.0f;
+   cam->aspect = (GLfloat)esContext->width / (GLfloat)esContext->height;
+   cam->nearZ = 0.5f; 
+   cam->farZ = 30.0f;
+   cam->fovy = 100.0f; 
+
 
    // initialize triangle drawing object .
    char vShaderStr_tri[] = "Triangle_VS.txt";
@@ -68,14 +84,14 @@ int Init ( ESContext *esContext )
 	const char *left_file = "D:\\Download\\skybox\\skybox\\left.jpg";
 	const char *right_file = "D:\\Download\\skybox\\skybox\\right.jpg";
 	const char *top_file = "D:\\Download\\skybox\\skybox\\top.jpg";
-	const char *images[6] = { right_file, left_file, top_file, bottom_file, front_file, back_file };
+	const char *images[6] = { right_file, left_file, top_file, bottom_file, back_file, front_file };
 	GLuint skyboxTextureId = loadCubemap(images);
 
 	// initializing skybox draw object
 	char vShaderStr_sky[] = "Skybox_VS.txt";
 	char fShaderStr_sky[] = "Skybox_FS.txt";
-	userData->skybox_drawObject = new SkyboxDrawObject(vShaderStr_sky, fShaderStr_sky);
-	if (!userData->skybox_drawObject->Init(skyboxTextureId, esContext)) {
+	userData->skybox_drawObject = new SkyboxDrawObject(vShaderStr_sky, fShaderStr_sky, cam);
+	if (!userData->skybox_drawObject->Init(skyboxTextureId)) {
 		return FALSE;
 	}
 
@@ -97,7 +113,8 @@ void Draw ( ESContext *esContext )
    // Clear the color buffer
    glClear ( GL_COLOR_BUFFER_BIT );
 
-   userData->triangle_drawObject->Draw();
+   userData->skybox_drawObject->Draw();
+   //userData->triangle_drawObject->Draw();
 
 }
 
@@ -107,11 +124,32 @@ void Shutdown ( ESContext *esContext )
 	delete userData->triangle_drawObject;
 }
 
+void normalize(float *x, float *y, float *z)
+{
+	float square_sum = (*x) * (*x) + (*y) * (*y) + (*z) * (*z);
+	(*x) = (*x) / square_sum;
+	(*y) = (*y) / square_sum;
+	(*z) = (*z) / square_sum;
+}
+
+void KeyStroke(ESContext *esContext, unsigned char c, int x, int y)
+{
+	if (c == 'a') 
+	{
+
+	}
+}
+
+void Update(ESContext *esContext, float deltaTime)
+{
+
+}
+
 int esMain ( ESContext *esContext )
 {
    esContext->userData = malloc ( sizeof ( UserData ) );
 
-   esCreateWindow ( esContext, "Hello Triangle", 320, 240, ES_WINDOW_RGB );
+   esCreateWindow ( esContext, "Hello Triangle", 640, 480, ES_WINDOW_RGB );
 
    if ( !Init ( esContext ) )
    {
@@ -119,7 +157,9 @@ int esMain ( ESContext *esContext )
    }
 
    esRegisterShutdownFunc ( esContext, Shutdown );
+   esRegisterUpdateFunc(esContext, Update);
    esRegisterDrawFunc ( esContext, Draw );
+   esRegisterKeyFunc(esContext, KeyStroke);
 
    return GL_TRUE;
 }

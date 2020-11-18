@@ -95,7 +95,7 @@ void TriangleDrawObject::Update(float deltaTime)
 
 
 // get uniform location and texture id.
-int SkyboxDrawObject::Init(GLuint skyboxTexture_in, ESContext *ctx)
+int SkyboxDrawObject::Init(GLuint skyboxTexture_in)
 {
 	DrawObject::Init();
 
@@ -109,22 +109,103 @@ int SkyboxDrawObject::Init(GLuint skyboxTexture_in, ESContext *ctx)
 	}
 
 	// mvp
-	GenModelview();
-	GenPerspective(60.0f, ctx->width / ctx->height, 1.0f, 20.0f);
+	this->_mvpUniformLoc = glGetUniformLocation(DrawObject::programObject, this->_mvpName);
+	if (this->_mvpUniformLoc == GL_INVALID_VALUE || this->_mvpUniformLoc == GL_INVALID_OPERATION)
+	{
+		printf("cannot find mvp uniform value\n");
+		return GL_FALSE;
+	}
+
+	GenModel();
+	GenView(TRUE);
+	GenPerspective();
 	GenMvp();
 
 	return GL_TRUE;
 }
 
-int SkyboxDrawObject::GenModelview()
+int SkyboxDrawObject::GenModel()
 {
-	esMatrixLoadIdentity(&modelviewMatrix);
-	esTranslate(&modelviewMatrix, 0, 0, -8.0);
+	esMatrixLoadIdentity(&modelMatrix);
+	esTranslate(&modelMatrix, 0.0, 0.0, 0.0);
 
 	return GL_TRUE;
 }
-
+int SkyboxDrawObject::GenView(bool removeTranslation)
+{
+	esMatrixLoadIdentity(&viewMatrix);
+	esMatrixLookAt(&viewMatrix, posX, posY, posZ, lookAtX, lookAtY, lookAtZ, upX, upY, upZ);
+	if (removeTranslation)
+	{
+		viewMatrix.m[3][0] = viewMatrix.m[3][1]  = viewMatrix.m[3][2] = viewMatrix.m[3][3]=  0.0;
+		viewMatrix.m[0][3] = viewMatrix.m[1][3]  = viewMatrix.m[2][2] = 0.0;
+	}
+	return GL_TRUE;
+}
 void SkyboxDrawObject::Draw()
 {
+	float skyboxVertices[] = {
+		// positions          
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
 
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f
+
+	};
+	
+	glDepthMask(GL_FALSE);
+	glDisable(GL_CULL_FACE);
+	
+	glUseProgram(programObject);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_BINDING_CUBE_MAP, _skyboxTextureId);
+	glUniform1i(_skyboxUniformLoc, 0);
+
+	// Load the vertex position
+	glVertexAttribPointer(0, 3, GL_FLOAT,
+		GL_FALSE, 3 * sizeof(GLfloat), skyboxVertices);
+	glEnableVertexAttribArray(0);
+
+	glUniformMatrix4fv(this->_mvpUniformLoc, 1, GL_FALSE, (GLfloat *)&mvpMatrix.m[0][0]);
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glEnable(GL_CULL_FACE);
+	glDepthMask(GL_TRUE);
 }

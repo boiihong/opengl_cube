@@ -43,17 +43,21 @@ public:
 
 class SkyboxDrawObject : DrawObject, MvpGenerator {
 public:
-	SkyboxDrawObject(const char *vsSrcFile, const char *fsSrcFile) :
-		DrawObject(vsSrcFile, fsSrcFile) {};
-
-	int Init(GLuint skyboxTexture_in, ESContext *ctx);
+	SkyboxDrawObject(const char *vsSrcFile, const char *fsSrcFile, ESCamera *camera_in) :
+		DrawObject(vsSrcFile, fsSrcFile) , MvpGenerator(camera_in) { };
+	
+	int Init(GLuint skyboxTexture_in);
 	void Draw();
-	int GenModelview() override;
+	int GenModel() override;
+	int GenView(bool removeTranslation) override;
+	
 private:
 
 	GLuint _skyboxTextureId;
 	const char *_skyboxName = "skybox";
 	GLint _skyboxUniformLoc;
+	const char *_mvpName = "u_mvpMatrix";
+	GLint _mvpUniformLoc;
 
 };
 
