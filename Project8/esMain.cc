@@ -48,6 +48,23 @@ typedef struct
 } UserData;
 
 
+void InitCam(ESContext *esContext, ESCamera *cam)
+{
+	cam->posX = 3.0f;
+	cam->posY = -5.0f; 
+	cam->posZ = 0.0f;
+	cam->lookAtX = 0.0f;
+	cam->lookAtZ = 0.0f;
+	cam->lookAtY = 1.0f;
+	cam->upX = 0.0f;
+	cam->upY = 0.0f;
+	cam->upY = 1.0f;
+	cam->aspect = (GLfloat)esContext->width / (GLfloat)esContext->height;
+	cam->nearZ = 0.5f;
+	cam->farZ = 30.0f;
+	cam->fovy = 100.0f;
+}
+
 ///
 // Initialize the shader and program object
 //
@@ -58,16 +75,7 @@ int Init ( ESContext *esContext )
    // set initial camera position
    userData->viewer = new ESCamera();
    ESCamera *cam = userData->viewer;
-   cam->posX = cam->posY = cam->posZ = 0.0f;
-   cam->lookAtX = cam->lookAtZ = 0.0f;
-   cam->lookAtY = 1.0f;
-   cam->upX = cam->upY = 0.0f;
-   cam->upY = 1.0f;
-   cam->aspect = (GLfloat)esContext->width / (GLfloat)esContext->height;
-   cam->nearZ = 0.5f; 
-   cam->farZ = 30.0f;
-   cam->fovy = 100.0f; 
-
+   InitCam(esContext, cam);
 
    // initialize triangle drawing object .
    char vShaderStr_tri[] = "Triangle_VS.txt";
@@ -114,7 +122,7 @@ void Draw ( ESContext *esContext )
    glClear ( GL_COLOR_BUFFER_BIT );
 
    userData->skybox_drawObject->Draw();
-   //userData->triangle_drawObject->Draw();
+   userData->triangle_drawObject->Draw();
 
 }
 
@@ -124,25 +132,18 @@ void Shutdown ( ESContext *esContext )
 	delete userData->triangle_drawObject;
 }
 
-void normalize(float *x, float *y, float *z)
-{
-	float square_sum = (*x) * (*x) + (*y) * (*y) + (*z) * (*z);
-	(*x) = (*x) / square_sum;
-	(*y) = (*y) / square_sum;
-	(*z) = (*z) / square_sum;
-}
 
 void KeyStroke(ESContext *esContext, unsigned char c, int x, int y)
 {
-	if (c == 'a') 
-	{
-
-	}
+	UserData *userData = (UserData *)esContext->userData;
+	userData->skybox_drawObject->CameraMove(c);
+	
 }
 
 void Update(ESContext *esContext, float deltaTime)
 {
-
+	UserData *userData = (UserData *)esContext->userData;
+	userData->skybox_drawObject->Update(deltaTime);
 }
 
 int esMain ( ESContext *esContext )

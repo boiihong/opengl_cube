@@ -21,6 +21,8 @@ public:
 		esMatrixLoadIdentity(&viewMatrix);
 		esMatrixLoadIdentity(&perspectiveMatrix);
 		esMatrixLoadIdentity(&mvpMatrix);
+
+		_change_flag = false;
 	}
 
 	virtual int GenModel() { return GL_FALSE; }
@@ -46,10 +48,42 @@ public:
 		return GL_TRUE;
 	}
 
+	bool CheckFlag()
+	{
+		return _change_flag;
+	}
+
+	bool ClearFlag()
+	{
+		if (_change_flag == GL_TRUE)
+		{
+			_change_flag = GL_FALSE;
+			return GL_TRUE;
+		}
+		else
+		{
+			return GL_FALSE;
+		}
+	}
+
+	bool SetFlag()
+	{
+		if (_change_flag == GL_FALSE)
+		{
+			_change_flag = GL_TRUE;
+			return GL_TRUE;
+		}
+		else 
+		{
+			return GL_FALSE;
+		}
+	}
 
 	ESCamera *_camera;
 	ESMatrix modelMatrix;
 	ESMatrix viewMatrix;
 	ESMatrix perspectiveMatrix;
 	ESMatrix mvpMatrix;
+private : 
+	GLboolean _change_flag;
 };

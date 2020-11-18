@@ -50,7 +50,11 @@ public:
 	void Draw();
 	int GenModel() override;
 	int GenView(bool removeTranslation) override;
+	void Update(float deltaTime) override ;
 	
+	// control
+	void CameraMove(unsigned char input);
+
 private:
 
 	GLuint _skyboxTextureId;
@@ -69,8 +73,7 @@ public:
 
 	int Init();
 	void Draw();
-	void Update(float deltaTime);
-
+	void Update();
 
 };
 

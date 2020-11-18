@@ -87,10 +87,8 @@ extern "C" {
 #ifndef TRUE
 #define TRUE 1
 #endif
-
-typedef ESCamera ESCamera;
-
-struct ESCamera
+	
+typedef struct ESCamera
 {
 	// camera position
 	GLfloat posX, posY, posZ;
@@ -100,7 +98,7 @@ struct ESCamera
 	GLfloat upX, upY, upZ;
 	// perspective
 	GLfloat fovy, aspect, nearZ, farZ;
-} ;
+} ESCamera;
 
 typedef struct
 {
@@ -352,4 +350,7 @@ esMatrixLookAt ( ESMatrix *result,
 
 
 GLuint ESUTIL_API loadCubemap(const char ** faces);
+
+GLint ESUTIL_API Normalize(GLfloat *x, GLfloat *y, GLfloat *z);
+
 #endif // ESUTIL_H

@@ -134,7 +134,20 @@ int SkyboxDrawObject::GenModel()
 int SkyboxDrawObject::GenView(bool removeTranslation)
 {
 	esMatrixLoadIdentity(&viewMatrix);
-	esMatrixLookAt(&viewMatrix, posX, posY, posZ, lookAtX, lookAtY, lookAtZ, upX, upY, upZ);
+	
+
+	// change up vector
+	GLfloat x_dir = _camera->lookAtX - _camera->posX;
+	GLfloat y_dir = _camera->lookAtY - _camera->posY;
+	GLfloat z_dir = _camera->lookAtZ - _camera->posZ;
+	Normalize(&x_dir, &y_dir, &z_dir);
+	_camera->upX = -y_dir;
+	_camera->upY = -x_dir;
+	_camera->upZ = 0.0f;
+
+	esMatrixLookAt(&viewMatrix, _camera->posX, _camera->posY, _camera->posZ, 
+								_camera->lookAtX, _camera->lookAtY, _camera->lookAtZ, 
+								_camera->upX, _camera->upY, _camera->upZ);
 	if (removeTranslation)
 	{
 		viewMatrix.m[3][0] = viewMatrix.m[3][1]  = viewMatrix.m[3][2] = viewMatrix.m[3][3]=  0.0;
@@ -208,4 +221,35 @@ void SkyboxDrawObject::Draw()
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glEnable(GL_CULL_FACE);
 	glDepthMask(GL_TRUE);
+}
+
+void SkyboxDrawObject::CameraMove(unsigned char input)
+{
+	if (input == (unsigned char)'a')
+	{
+		printf(" add look At ...\b");
+		// move camera ... 
+		_camera->lookAtY += 0.1;
+
+		SetFlag();
+	}
+	else if (input == (unsigned char)'j')
+	{
+		_camera->posY += 1.0f;
+		_camera->lookAtY += 1.0f;
+		SetFlag();
+	}
+}
+
+void SkyboxDrawObject::Update(float deltaTime)
+{
+	if ( CheckFlag() )
+	{
+		GenModel();
+		GenView(TRUE);
+		GenPerspective();
+		GenMvp();
+
+		ClearFlag();
+	}
 }

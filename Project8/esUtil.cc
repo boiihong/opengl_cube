@@ -472,3 +472,14 @@ GLuint ESUTIL_API loadCubemap(const char ** faces)
 
 	return textureID;
 }
+
+GLint ESUTIL_API Normalize(GLfloat *x, GLfloat *y, GLfloat *z)
+{
+	float square_sum = (*x) * (*x) + (*y) * (*y) + (*z) * (*z);
+	(*x) = (*x) / square_sum;
+	(*y) = (*y) / square_sum;
+	(*z) = (*z) / square_sum;
+
+	return GL_TRUE;
+}
+
