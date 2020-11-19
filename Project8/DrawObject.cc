@@ -131,30 +131,7 @@ int SkyboxDrawObject::GenModel()
 
 	return GL_TRUE;
 }
-int SkyboxDrawObject::GenView(bool removeTranslation)
-{
-	esMatrixLoadIdentity(&viewMatrix);
-	
 
-	// change up vector
-	GLfloat x_dir = _camera->lookAtX - _camera->posX;
-	GLfloat y_dir = _camera->lookAtY - _camera->posY;
-	GLfloat z_dir = _camera->lookAtZ - _camera->posZ;
-	Normalize(&x_dir, &y_dir, &z_dir);
-	_camera->upX = -y_dir;
-	_camera->upY = -x_dir;
-	_camera->upZ = 0.0f;
-
-	esMatrixLookAt(&viewMatrix, _camera->posX, _camera->posY, _camera->posZ, 
-								_camera->lookAtX, _camera->lookAtY, _camera->lookAtZ, 
-								_camera->upX, _camera->upY, _camera->upZ);
-	if (removeTranslation)
-	{
-		viewMatrix.m[3][0] = viewMatrix.m[3][1]  = viewMatrix.m[3][2] = viewMatrix.m[3][3]=  0.0;
-		viewMatrix.m[0][3] = viewMatrix.m[1][3]  = viewMatrix.m[2][2] = 0.0;
-	}
-	return GL_TRUE;
-}
 void SkyboxDrawObject::Draw()
 {
 	float skyboxVertices[] = {
@@ -229,7 +206,7 @@ void SkyboxDrawObject::CameraMove(unsigned char input)
 	{
 		printf(" add look At ...\b");
 		// move camera ... 
-		_camera->lookAtY += 0.1;
+		_camera->lookAtY += 0.1f;
 
 		SetFlag();
 	}
@@ -251,5 +228,127 @@ void SkyboxDrawObject::Update(float deltaTime)
 		GenMvp();
 
 		ClearFlag();
+	}
+}
+
+
+
+/*
+* Rotating cube ....
+*
+*/
+int RotatingCubeObject::Init(GLuint skyboxTexture_in)
+{
+	DrawObject::Init();
+
+	// texture 
+	//this->_skyboxTextureId = skyboxTexture_in;
+	//this->_skyboxUniformLoc = glGetUniformLocation(DrawObject::programObject, this->_skyboxName);
+	//if (this->_skyboxUniformLoc == GL_INVALID_VALUE || this->_skyboxUniformLoc == GL_INVALID_OPERATION)
+	//{
+	//	printf("cannot find skybox uniform value\n");
+	//	return GL_FALSE;
+	//}
+
+	// mvp
+	this->_mvpUniformLoc = glGetUniformLocation(DrawObject::programObject, this->_mvpName);
+	if (this->_mvpUniformLoc == GL_INVALID_VALUE || this->_mvpUniformLoc == GL_INVALID_OPERATION)
+	{
+		printf("cannot find mvp uniform value\n");
+		return GL_FALSE;
+	}
+
+	// object initialization 
+	this->_angle = 45.0f;
+
+	this->_num_vertices = esGenCube(1.0, &this->_vertices, NULL, NULL, &this->_indices);
+
+	// mvp initialization
+	GenModel();
+	GenView(FALSE);
+	GenPerspective();
+	GenMvp();
+
+	return GL_TRUE;
+}
+
+void RotatingCubeObject::Draw()
+{
+	glUseProgram(programObject);
+	// Load the vertex position
+	glVertexAttribPointer(0, 3, GL_FLOAT,
+		GL_FALSE, 3 * sizeof(GLfloat), _vertices);
+
+	glEnableVertexAttribArray(0);
+
+	// Set the vertex color to red
+	glVertexAttrib4f(1, 1.0f, 0.0f, 0.0f, 1.0f);
+
+	// Load the MVP matrix
+	glUniformMatrix4fv(this->_mvpUniformLoc, 1, GL_FALSE, (GLfloat *)&mvpMatrix.m[0][0]);
+
+	// Draw the cube
+	glDrawElements(GL_TRIANGLES, _num_vertices, GL_UNSIGNED_INT, _indices);
+}
+
+void RotatingCubeObject::Update(float deltaTime)
+{
+	// adjust angle
+	_angle += (deltaTime * 40.0f);
+
+	if (_angle >= 360.0f)
+	{
+		_angle -= 360.0f;
+	}
+
+	if (CheckFlag())
+	{
+		GenModel();
+		GenView(FALSE);
+		GenPerspective();
+		GenMvp();
+
+		ClearFlag();
+	}
+	else
+	{
+		GenModel();
+		GenMvp();
+	}
+}
+
+RotatingCubeObject::~RotatingCubeObject()
+{
+	if (this->_vertices)
+		free(this->_vertices);
+
+	if (this->_indices)
+		free(this->_indices);
+}
+
+int RotatingCubeObject::GenModel()
+{
+	esMatrixLoadIdentity(&modelMatrix);
+	esTranslate(&modelMatrix, 0.0, 0.0, -2.0);
+	esRotate(&modelMatrix, _angle, 1.0, 0.0, 1.0);
+	return GL_TRUE;
+}
+
+
+void RotatingCubeObject::CameraMove(unsigned char input)
+{
+	if (input == (unsigned char)'a')
+	{
+		printf(" add look At ...\b");
+		// move camera ... 
+		_camera->lookAtY += 0.1f;
+
+		SetFlag();
+	}
+	else if (input == (unsigned char)'j')
+	{
+		_camera->posY += 1.0f;
+		_camera->lookAtY += 1.0f;
+		SetFlag();
 	}
 }

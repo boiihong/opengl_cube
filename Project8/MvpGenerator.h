@@ -28,8 +28,29 @@ public:
 	virtual int GenModel() { return GL_FALSE; }
 
 
-	virtual int GenView(bool removeTranslation)
-	{ return GL_FALSE; }
+	int GenView(bool removeTranslation)
+	{
+		esMatrixLoadIdentity(&viewMatrix);
+
+		// change up vector
+		GLfloat x_dir = _camera->lookAtX - _camera->posX;
+		GLfloat y_dir = _camera->lookAtY - _camera->posY;
+		GLfloat z_dir = _camera->lookAtZ - _camera->posZ;
+		Normalize(&x_dir, &y_dir, &z_dir);
+		_camera->upX = -y_dir;
+		_camera->upY = -x_dir;
+		_camera->upZ = 0.0f;
+
+		esMatrixLookAt(&viewMatrix, _camera->posX, _camera->posY, _camera->posZ,
+			_camera->lookAtX, _camera->lookAtY, _camera->lookAtZ,
+			_camera->upX, _camera->upY, _camera->upZ);
+		if (removeTranslation)
+		{
+			viewMatrix.m[3][0] = viewMatrix.m[3][1] = viewMatrix.m[3][2] = viewMatrix.m[3][3] = 0.0;
+			viewMatrix.m[0][3] = viewMatrix.m[1][3] = viewMatrix.m[2][2] = 0.0;
+		}
+		return GL_TRUE;
+	}
 
 	int GenPerspective() 
 	{
@@ -37,6 +58,7 @@ public:
 		esPerspective(&perspectiveMatrix, _camera->fovy, _camera->aspect, _camera->nearZ, _camera->farZ);
 		return GL_TRUE;
 	}
+
 	int GenMvp() 
 	{
 		ESMatrix modelviewMatrix_temp;

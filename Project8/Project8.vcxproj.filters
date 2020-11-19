@@ -53,6 +53,12 @@
     <Text Include="Skybox_VS.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="RotatingCube_VS.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="RotatingCube_FS.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawObject.h">

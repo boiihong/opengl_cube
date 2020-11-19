@@ -130,6 +130,8 @@
     <ClCompile Include="MvpGenerator.cc" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="RotatingCube_FS.txt" />
+    <Text Include="RotatingCube_VS.txt" />
     <Text Include="Skybox_FS.txt" />
     <Text Include="Skybox_VS.txt" />
     <Text Include="Triangle_FS.txt" />

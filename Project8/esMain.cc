@@ -43,6 +43,7 @@ typedef struct
 {
 	TriangleDrawObject	*triangle_drawObject;
 	SkyboxDrawObject	*skybox_drawObject;
+	RotatingCubeObject	*rotatingcube_drawObject;
 	ESCamera			*viewer;
 
 } UserData;
@@ -103,6 +104,13 @@ int Init ( ESContext *esContext )
 		return FALSE;
 	}
 
+	char vShaderStr_cube[] = "RotatingCube_VS.txt";
+	char fShaderStr_cube[] = "RotatingCube_FS.txt";
+	userData->rotatingcube_drawObject = new RotatingCubeObject(vShaderStr_cube, fShaderStr_cube, cam);
+	if (!userData->rotatingcube_drawObject->Init(skyboxTextureId)) {
+		return FALSE;
+	}
+
    glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
    return TRUE;
 }
@@ -122,7 +130,8 @@ void Draw ( ESContext *esContext )
    glClear ( GL_COLOR_BUFFER_BIT );
 
    userData->skybox_drawObject->Draw();
-   userData->triangle_drawObject->Draw();
+   //userData->triangle_drawObject->Draw();
+   userData->rotatingcube_drawObject->Draw();
 
 }
 
@@ -130,6 +139,8 @@ void Shutdown ( ESContext *esContext )
 {
 	UserData *userData = (UserData *)esContext->userData;
 	delete userData->triangle_drawObject;
+	delete userData->skybox_drawObject;
+	delete userData->rotatingcube_drawObject;
 }
 
 
@@ -137,6 +148,7 @@ void KeyStroke(ESContext *esContext, unsigned char c, int x, int y)
 {
 	UserData *userData = (UserData *)esContext->userData;
 	userData->skybox_drawObject->CameraMove(c);
+	userData->rotatingcube_drawObject->CameraMove(c);
 	
 }
 
@@ -144,6 +156,7 @@ void Update(ESContext *esContext, float deltaTime)
 {
 	UserData *userData = (UserData *)esContext->userData;
 	userData->skybox_drawObject->Update(deltaTime);
+	userData->rotatingcube_drawObject->Update(deltaTime);
 }
 
 int esMain ( ESContext *esContext )
