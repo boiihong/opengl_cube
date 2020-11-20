@@ -202,20 +202,7 @@ void SkyboxDrawObject::Draw()
 
 void SkyboxDrawObject::CameraMove(unsigned char input)
 {
-	if (input == (unsigned char)'a')
-	{
-		printf(" add look At ...\b");
-		// move camera ... 
-		_camera->lookAtY += 0.1f;
-
-		SetFlag();
-	}
-	else if (input == (unsigned char)'j')
-	{
-		_camera->posY += 1.0f;
-		_camera->lookAtY += 1.0f;
-		SetFlag();
-	}
+	ProcessInput(input);
 }
 
 void SkyboxDrawObject::Update(float deltaTime)
@@ -329,7 +316,8 @@ RotatingCubeObject::~RotatingCubeObject()
 int RotatingCubeObject::GenModel()
 {
 	esMatrixLoadIdentity(&modelMatrix);
-	esTranslate(&modelMatrix, 0.0, 0.0, -2.0);
+	esTranslate(&modelMatrix, 0.0, 0.0, -8.0);
+	esScale(&modelMatrix, 5.0, 5.0, 5.0);
 	esRotate(&modelMatrix, _angle, 1.0, 0.0, 1.0);
 	return GL_TRUE;
 }
@@ -337,18 +325,5 @@ int RotatingCubeObject::GenModel()
 
 void RotatingCubeObject::CameraMove(unsigned char input)
 {
-	if (input == (unsigned char)'a')
-	{
-		printf(" add look At ...\b");
-		// move camera ... 
-		_camera->lookAtY += 0.1f;
-
-		SetFlag();
-	}
-	else if (input == (unsigned char)'j')
-	{
-		_camera->posY += 1.0f;
-		_camera->lookAtY += 1.0f;
-		SetFlag();
-	}
+	ProcessInput(input);
 }

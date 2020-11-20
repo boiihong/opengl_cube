@@ -52,11 +52,11 @@ typedef struct
 void InitCam(ESContext *esContext, ESCamera *cam)
 {
 	cam->posX = 3.0f;
-	cam->posY = -5.0f; 
-	cam->posZ = 0.0f;
+	cam->posY = 0.0f; 
+	cam->posZ = 3.0f;
 	cam->lookAtX = 0.0f;
-	cam->lookAtZ = 0.0f;
-	cam->lookAtY = 1.0f;
+	cam->lookAtZ = -1.0f;
+	cam->lookAtY = 0.0f;
 	cam->upX = 0.0f;
 	cam->upY = 0.0f;
 	cam->upY = 1.0f;
@@ -93,7 +93,7 @@ int Init ( ESContext *esContext )
 	const char *left_file = "D:\\Download\\skybox\\skybox\\left.jpg";
 	const char *right_file = "D:\\Download\\skybox\\skybox\\right.jpg";
 	const char *top_file = "D:\\Download\\skybox\\skybox\\top.jpg";
-	const char *images[6] = { right_file, left_file, top_file, bottom_file, back_file, front_file };
+	const char *images[6] = { right_file, left_file, top_file, bottom_file, front_file, back_file };
 	GLuint skyboxTextureId = loadCubemap(images);
 
 	// initializing skybox draw object

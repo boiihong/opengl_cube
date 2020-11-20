@@ -101,6 +101,22 @@ public:
 		}
 	}
 
+	bool ProcessInput(unsigned char input)
+	{
+		if (input == (unsigned char)'a')
+		{
+			// move camera ... 
+			_camera->posX += 1.0f;
+			SetFlag();
+		}
+		else if (input == (unsigned char)'d')
+		{
+			_camera->posX -= 1.0f;
+			SetFlag();
+		}
+		return GL_TRUE;
+	}
+
 	ESCamera *_camera;
 	ESMatrix modelMatrix;
 	ESMatrix viewMatrix;
